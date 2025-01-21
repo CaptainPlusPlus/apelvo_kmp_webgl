@@ -4,7 +4,7 @@ import androidx.compose.ui.graphics.Color
 
 // Light theme colors
 val White = Color(0xFFFFFFFF)
-val PrimaryGreen = Color(0xFFB8D6CE) // Your primary green
+val PrimaryGreen = Color(0xFFABD3CD) // Your primary green
 val LightGreen = Color(0xFFE8F5F3) // A lighter shade of green for containers
 val DarkGreen = Color(0xFF4A877C) // A darker shade of green for accents
 

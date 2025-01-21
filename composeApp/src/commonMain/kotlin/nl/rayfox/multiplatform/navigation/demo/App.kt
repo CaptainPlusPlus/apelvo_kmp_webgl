@@ -1,10 +1,103 @@
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
-import nl.rayfox.multiplatform.navigation.demo.ui.screen.MainMenuScreen
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import nl.rayfox.multiplatform.navigation.demo.navigation.Screen
+import nl.rayfox.multiplatform.navigation.demo.ui.components.ApelvoBottomBar
+import nl.rayfox.multiplatform.navigation.demo.ui.components.ApelvoTopBar
+import nl.rayfox.multiplatform.navigation.demo.ui.animation.springInFromBottom
+import nl.rayfox.multiplatform.navigation.demo.ui.animation.springOutToTop
+import nl.rayfox.multiplatform.navigation.demo.ui.screen.*
 import nl.rayfox.multiplatform.navigation.demo.ui.theme.ApelvoTheme
+import nl.rayfox.multiplatform.navigation.demo.ui.theme.DarkGreen
 
 @Composable
 fun App() {
+    val navController = rememberNavController()
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+
     ApelvoTheme {
-        MainMenuScreen()
+        Scaffold(
+            topBar = {
+                ApelvoTopBar(
+                    onSettingsClick = {
+                        navController.navigate(Screen.Settings.route)
+                    }
+                )
+            },
+            bottomBar = {
+                ApelvoBottomBar(
+                    currentRoute = currentRoute,
+                    onNavigate = { screen ->
+                        navController.navigate(screen.route) {
+                            // Pop up to the start destination of the graph to
+                            // avoid building up a large stack of destinations
+                            popUpTo(Screen.Overview.route) {
+                                saveState = true
+                            }
+                            // Avoid multiple copies of the same destination
+                            launchSingleTop = true
+                            // Restore state when reselecting a previously selected item
+                            restoreState = true
+                        }
+                    }
+                )
+            }
+        ) { paddingValues ->
+            Box(
+                modifier = Modifier
+                    .padding(paddingValues)
+                    .shadow(
+                        elevation = 4.dp,
+                        spotColor = MaterialTheme.colors.onSurface.copy(alpha = 0.15f),
+                        ambientColor = DarkGreen.copy(alpha = 0.1f)
+                    )
+            ) {
+                NavHost(
+                    navController = navController,
+                    startDestination = Screen.Overview.route,
+                ) {
+                    composable(
+                        route = Screen.Overview.route,
+                        enterTransition = { springInFromBottom() },
+                        exitTransition = { springOutToTop() }
+                    ) {
+                        MainMenuScreen()
+                    }
+                    composable(
+                        route = Screen.Training.route,
+                        enterTransition = { springInFromBottom() },
+                        exitTransition = { springOutToTop() }
+                    ) {
+                        TrainingScreen()
+                    }
+                    composable(
+                        route = Screen.Progress.route,
+                        enterTransition = { springInFromBottom() },
+                        exitTransition = { springOutToTop() }
+                    ) {
+                        ProgressScreen()
+                    }
+                    composable(
+                        route = Screen.Settings.route,
+                        enterTransition = { springInFromBottom() },
+                        exitTransition = { springOutToTop() }
+                    ) {
+                        SettingsScreen()
+                    }
+                }
+            }
+        }
     }
 }
