@@ -72,3 +72,7 @@ val md_theme_dark_inversePrimary = DarkGreenAccent
 val md_theme_dark_surfaceTint = DarkGreenAccent
 val md_theme_dark_outlineVariant = DarkGreen
 val md_theme_dark_scrim = Color(0xFF000000)
+
+// Add this if it's not already the same as PrimaryGreen
+val StatCardGreen = Color(0xFFABD3CD)  // This should match your OverviewStatCard green
+val ProgressBackgroundGreen = Color(0xFFE8F5F3)  // Light background for progress indicators

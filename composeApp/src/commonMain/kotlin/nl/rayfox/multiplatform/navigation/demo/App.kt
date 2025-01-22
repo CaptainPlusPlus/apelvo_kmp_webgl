@@ -16,10 +16,11 @@ import nl.rayfox.multiplatform.navigation.demo.navigation.Screen
 import nl.rayfox.multiplatform.navigation.demo.ui.components.ApelvoBottomBar
 import nl.rayfox.multiplatform.navigation.demo.ui.components.ApelvoTopBar
 import nl.rayfox.multiplatform.navigation.demo.ui.animation.springInFromBottom
-import nl.rayfox.multiplatform.navigation.demo.ui.animation.springOutToTop
+import nl.rayfox.multiplatform.navigation.demo.ui.animation.springOutToBottom
 import nl.rayfox.multiplatform.navigation.demo.ui.screen.*
 import nl.rayfox.multiplatform.navigation.demo.ui.theme.ApelvoTheme
 import nl.rayfox.multiplatform.navigation.demo.ui.theme.DarkGreen
+import nl.rayfox.multiplatform.navigation.demo.ui.theme.PrimaryGreen
 
 @Composable
 fun App() {
@@ -29,6 +30,7 @@ fun App() {
 
     ApelvoTheme {
         Scaffold(
+            backgroundColor = PrimaryGreen,
             topBar = {
                 ApelvoTopBar(
                     onSettingsClick = {
@@ -56,13 +58,7 @@ fun App() {
             }
         ) { paddingValues ->
             Box(
-                modifier = Modifier
-                    .padding(paddingValues)
-                    .shadow(
-                        elevation = 4.dp,
-                        spotColor = MaterialTheme.colors.onSurface.copy(alpha = 0.15f),
-                        ambientColor = DarkGreen.copy(alpha = 0.1f)
-                    )
+                modifier = Modifier.padding(paddingValues)
             ) {
                 NavHost(
                     navController = navController,
@@ -71,28 +67,28 @@ fun App() {
                     composable(
                         route = Screen.Overview.route,
                         enterTransition = { springInFromBottom() },
-                        exitTransition = { springOutToTop() }
+                        exitTransition = { springOutToBottom() }
                     ) {
                         MainMenuScreen()
                     }
                     composable(
                         route = Screen.Training.route,
                         enterTransition = { springInFromBottom() },
-                        exitTransition = { springOutToTop() }
+                        exitTransition = { springOutToBottom() }
                     ) {
                         TrainingScreen()
                     }
                     composable(
                         route = Screen.Progress.route,
                         enterTransition = { springInFromBottom() },
-                        exitTransition = { springOutToTop() }
+                        exitTransition = { springOutToBottom() }
                     ) {
                         ProgressScreen()
                     }
                     composable(
                         route = Screen.Settings.route,
                         enterTransition = { springInFromBottom() },
-                        exitTransition = { springOutToTop() }
+                        exitTransition = { springOutToBottom() }
                     ) {
                         SettingsScreen()
                     }

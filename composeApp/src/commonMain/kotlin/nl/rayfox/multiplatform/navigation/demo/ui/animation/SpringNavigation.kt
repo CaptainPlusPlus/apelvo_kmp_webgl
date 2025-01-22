@@ -11,19 +11,19 @@ import androidx.compose.animation.AnimatedContentTransitionScope
 fun springInFromBottom(): EnterTransition {
     return slideInVertically(
         animationSpec = spring(
-            dampingRatio = Spring.DampingRatioMediumBouncy,
-            stiffness = Spring.StiffnessLow
+            dampingRatio = Spring.DampingRatioNoBouncy,
+            stiffness = Spring.StiffnessMediumLow
         ),
-        initialOffsetY = { it }
+        initialOffsetY = { fullHeight -> fullHeight }
     )
 }
 
-fun springOutToTop(): ExitTransition {
+fun springOutToBottom(): ExitTransition {
     return slideOutVertically(
         animationSpec = spring(
-            dampingRatio = Spring.DampingRatioMediumBouncy,
-            stiffness = Spring.StiffnessLow
+            dampingRatio = Spring.DampingRatioNoBouncy,
+            stiffness = Spring.StiffnessMediumLow
         ),
-        targetOffsetY = { -it }
+        targetOffsetY = { fullHeight -> fullHeight }
     )
 } 

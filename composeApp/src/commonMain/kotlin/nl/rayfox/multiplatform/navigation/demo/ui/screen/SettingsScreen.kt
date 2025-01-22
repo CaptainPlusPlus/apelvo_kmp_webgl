@@ -6,13 +6,16 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import nl.rayfox.multiplatform.navigation.demo.ui.components.ScreenLayout
 
 @Composable
 fun SettingsScreen() {
+    ScreenLayout {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         Text("Settings Screen")
+        }
     }
 } 
