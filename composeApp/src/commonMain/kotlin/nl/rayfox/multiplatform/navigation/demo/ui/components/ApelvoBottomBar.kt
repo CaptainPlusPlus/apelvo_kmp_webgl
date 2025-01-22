@@ -8,7 +8,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
-import nl.rayfox.multiplatform.navigation.demo.navigation.Screen
+import nl.rayfox.multiplatform.navigation.demo.ui.navigation.Screen
 
 data class BottomNavItem(
     val screen: Screen,

@@ -12,11 +12,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import nl.rayfox.multiplatform.navigation.demo.navigation.Screen
 import nl.rayfox.multiplatform.navigation.demo.ui.components.ApelvoBottomBar
 import nl.rayfox.multiplatform.navigation.demo.ui.components.ApelvoTopBar
 import nl.rayfox.multiplatform.navigation.demo.ui.animation.springInFromBottom
 import nl.rayfox.multiplatform.navigation.demo.ui.animation.springOutToBottom
+import nl.rayfox.multiplatform.navigation.demo.ui.navigation.Screen
 import nl.rayfox.multiplatform.navigation.demo.ui.screen.*
 import nl.rayfox.multiplatform.navigation.demo.ui.theme.ApelvoTheme
 import nl.rayfox.multiplatform.navigation.demo.ui.theme.DarkGreen

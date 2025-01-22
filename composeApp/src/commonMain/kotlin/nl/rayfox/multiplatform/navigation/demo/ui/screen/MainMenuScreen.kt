@@ -67,10 +67,13 @@ fun MainMenuScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // 4) Row for "1466 Gesamtpunkte" and "1,57 Spielstunden"
+            // 4) Row for stats cards with adjusted spacing
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
+                modifier = Modifier
+                    .fillMaxWidth(0.8f)  // Take only 80% of the width
+                    .padding(horizontal = 16.dp),
+                horizontalArrangement = Arrangement.Center,  // Center the cards
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 // Left card
                 OverviewStatCard(
@@ -78,10 +81,12 @@ fun MainMenuScreen(
                     value = viewModel.totalPoints.toString()
                 )
 
+                Spacer(modifier = Modifier.width(32.dp))  // Fixed gap between cards
+
                 // Right card
                 OverviewStatCard(
                     title = "Spielstunden",
-                    value = viewModel.totalPlayHours
+                    value = "27.3"
                 )
             }
 
