@@ -9,13 +9,13 @@ import androidx.compose.ui.Modifier
 import nl.rayfox.multiplatform.navigation.demo.ui.components.ScreenLayout
 
 @Composable
-fun ProgressScreen() {
+fun GamesScreen() {
     ScreenLayout {
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            Text("Progress Screen")
+            Text("Games Screen")
         }
     }
-} 
+}

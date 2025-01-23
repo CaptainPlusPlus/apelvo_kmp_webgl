@@ -11,6 +11,12 @@ plugins {
     alias(libs.plugins.composeCompiler)
 }
 
+repositories {
+    google()
+    mavenCentral()
+    maven("https://jogamp.org/deployment/maven")
+}
+
 kotlin {
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
@@ -47,6 +53,7 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+            api(libs.compose.webview.multiplatform)
         }
         commonMain.dependencies {
             implementation(compose.runtime)

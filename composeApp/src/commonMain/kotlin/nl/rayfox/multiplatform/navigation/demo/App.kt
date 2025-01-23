@@ -83,7 +83,7 @@ fun App() {
                         enterTransition = { springInFromBottom() },
                         exitTransition = { springOutToBottom() }
                     ) {
-                        ProgressScreen()
+                        GamesScreen()
                     }
                     composable(
                         route = Screen.Settings.route,
