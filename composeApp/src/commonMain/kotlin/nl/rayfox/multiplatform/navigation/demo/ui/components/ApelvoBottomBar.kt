@@ -24,7 +24,7 @@ fun ApelvoBottomBar(
     val items = listOf(
         BottomNavItem(Screen.Overview, Icons.Default.Home, "Overview"),
         BottomNavItem(Screen.Training, Icons.Default.Person, "Training"),
-        BottomNavItem(Screen.Progress, Icons.Default.PlayArrow, "Games"),
+        BottomNavItem(Screen.GameHub, Icons.Default.PlayArrow, "Games"),
     )
 
     BottomNavigation {

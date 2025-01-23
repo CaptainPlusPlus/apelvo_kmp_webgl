@@ -11,12 +11,6 @@ plugins {
     alias(libs.plugins.composeCompiler)
 }
 
-repositories {
-    google()
-    mavenCentral()
-    maven("https://jogamp.org/deployment/maven")
-}
-
 kotlin {
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)

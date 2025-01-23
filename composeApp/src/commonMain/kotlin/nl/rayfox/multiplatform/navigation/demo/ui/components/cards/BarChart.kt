@@ -9,25 +9,30 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.min
 import nl.rayfox.multiplatform.navigation.demo.ui.theme.StatCardGreen
 import nl.rayfox.multiplatform.navigation.demo.ui.theme.ProgressBackgroundGreen
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun BarChart(values: List<Float>, modifier: Modifier = Modifier) {
-    val maxVal = values.maxOrNull() ?: 1f
-
+fun BarChart(
+    values: List<Float>,
+    modifier: Modifier = Modifier,
+    maxHeight: Dp = 120.dp
+) {
     Row(
         modifier = modifier
             .width(IntrinsicSize.Min)
             .padding(horizontal = 8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp) // 8dp spacing between bars
+        horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         values.forEach { value ->
-            val barHeightFraction = value / maxVal
+            val barHeightFraction = value / (values.maxOrNull() ?: 1f)
             Box(
                 modifier = Modifier
-                    .width(24.dp)
-                    .height(120.dp)
+                    .width(16.dp)
+                    .height(maxHeight)
                     .clip(RoundedCornerShape(8.dp))
                     .background(ProgressBackgroundGreen),
                 contentAlignment = Alignment.BottomCenter
@@ -41,5 +46,16 @@ fun BarChart(values: List<Float>, modifier: Modifier = Modifier) {
                 )
             }
         }
+    }
+}
+
+@Preview
+@Composable
+private fun BarChartPreview() {
+    MaterialTheme {
+        BarChart(
+            values = listOf(0.3f, 0.7f, 0.5f, 0.9f, 0.4f),
+            maxHeight = 100.dp
+        )
     }
 }

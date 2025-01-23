@@ -19,6 +19,8 @@ import nl.rayfox.multiplatform.navigation.demo.ui.cards.CircularProgressIndicato
 import nl.rayfox.multiplatform.navigation.demo.ui.cards.OverviewStatCard
 import org.jetbrains.compose.resources.painterResource
 import nl.rayfox.multiplatform.navigation.demo.ui.components.ScreenLayout
+import androidx.compose.material.MaterialTheme
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 // If using string composeResources for localization, you'd do:
 // import androidx.compose.ui.res.stringResource
@@ -29,84 +31,75 @@ fun MainMenuScreen(
     viewModel: MainMenuViewModel = MainMenuViewModel()
 ) {
     ScreenLayout {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            // 1) Top Image (banner or header background)
-            // For multiplatform:
-            //  - Android: painterResource(R.drawable.my_top_image)
-            //  - Desktop: painterResource("images/my_top_image.png")
-            Image(
-                painter = painterResource(Res.drawable.apelvo_logo), // Replace with your resource name
-                contentDescription = "Header Image",       // stringResource(R.string.header_image_desc)
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(120.dp)  // Adjust as needed
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // 2) "Hallo Leo!" -- ignoring the small icon
-            Text(
-                text = /* stringResource(R.string.hallo_name) */ "Hallo Leo!",
-                // You can choose a heading style from your ApelvoTheme or define your own.
-                // For example, if your theme's typography is not set, you could do:
-                fontSize = 24.sp,
-                fontFamily = FontFamily.SansSerif
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // 3) "Übersicht" and subhead
-            Text(
-                text = /* stringResource(R.string.overview_title) */ "Übersicht",
-                fontSize = 15.sp,
-                fontFamily = FontFamily.SansSerif
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // 4) Row for stats cards with adjusted spacing
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(0.8f)  // Take only 80% of the width
-                    .padding(horizontal = 16.dp),
-                horizontalArrangement = Arrangement.Center,  // Center the cards
-                verticalAlignment = Alignment.CenterVertically
+        BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
+            val screenHeight = maxHeight
+            
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceEvenly // This distributes space evenly
             ) {
-                // Left card
-                OverviewStatCard(
-                    title = "Gesamtpunkte",
-                    value = viewModel.totalPoints.toString()
+                // Logo Section (15% of height)
+                Image(
+                    painter = painterResource(Res.drawable.apelvo_logo),
+                    contentDescription = "Header Image",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height((screenHeight * 0.15f).coerceAtMost(120.dp))
                 )
 
-                Spacer(modifier = Modifier.width(32.dp))  // Fixed gap between cards
+                // Stats Cards Section (20% of height)
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(0.9f)
+                        .padding(horizontal = 8.dp),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    OverviewStatCard(
+                        title = "Gesamtpunkte",
+                        value = viewModel.totalPoints.toString(),
+                        modifier = Modifier.weight(1f)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    OverviewStatCard(
+                        title = "Spielstunden",
+                        value = "27.3",
+                        modifier = Modifier.weight(1f)
+                    )
+                }
 
-                // Right card
-                OverviewStatCard(
-                    title = "Spielstunden",
-                    value = "27.3"
+                // Circular Progress Section (25% of height)
+                CircularProgressIndicator(
+                    progress = viewModel.circularProgress / 100f,
+                    displayedPercentage = viewModel.circularProgress,
+                    size = (screenHeight * 0.25f).coerceAtMost(160.dp)
                 )
+
+                // Bar Chart Section (25% of height)
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.padding(vertical = 8.dp)
+                ) {
+                    Text(
+                        text = "Mo 01.07 - Fr 05.07",
+                        fontSize = 14.sp,
+                        fontFamily = FontFamily.SansSerif
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    BarChart(
+                        values = viewModel.barChartValues,
+                        maxHeight = (screenHeight * 0.2f).coerceAtMost(140.dp)
+                    )
+                }
             }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // 5) Circular progress
-            CircularProgressIndicator(
-                progress = viewModel.circularProgress / 100f,
-                displayedPercentage = viewModel.circularProgress
-            )
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // 6) Simple Bar Chart
-            Text(
-                text = "Mo 01.07 - Fr 05.07", // for example
-                fontSize = 14.sp,
-                fontFamily = FontFamily.SansSerif
-            )
-            BarChart(values = viewModel.barChartValues)
         }
+    }
+}
+
+@Preview
+@Composable
+private fun MainMenuScreenPreview() {
+    MaterialTheme {
+        MainMenuScreen()
     }
 }

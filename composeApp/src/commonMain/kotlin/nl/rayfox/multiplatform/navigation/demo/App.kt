@@ -8,10 +8,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import nl.rayfox.multiplatform.navigation.demo.ui.components.ApelvoBottomBar
 import nl.rayfox.multiplatform.navigation.demo.ui.components.ApelvoTopBar
 import nl.rayfox.multiplatform.navigation.demo.ui.animation.springInFromBottom
@@ -79,11 +81,15 @@ fun App() {
                         TrainingScreen()
                     }
                     composable(
-                        route = Screen.Progress.route,
+                        route = Screen.GameHub.route,
                         enterTransition = { springInFromBottom() },
                         exitTransition = { springOutToBottom() }
                     ) {
-                        GamesScreen()
+                        GameHubScreen(
+                            onGameSelected = { gameId ->
+                                navController.navigate("game/$gameId")
+                            }
+                        )
                     }
                     composable(
                         route = Screen.Settings.route,
@@ -91,6 +97,13 @@ fun App() {
                         exitTransition = { springOutToBottom() }
                     ) {
                         SettingsScreen()
+                    }
+                    composable(
+                        route = "game/{gameId}",
+                        arguments = listOf(navArgument("gameId") { type = NavType.StringType })
+                    ) { backStackEntry ->
+                        val gameId = backStackEntry.arguments?.getString("gameId") ?: return@composable
+                        GamePlayerScreen(gameId = gameId)
                     }
                 }
             }
