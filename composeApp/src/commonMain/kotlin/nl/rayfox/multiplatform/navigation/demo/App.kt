@@ -1,4 +1,8 @@
 import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
@@ -29,6 +33,9 @@ fun App() {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
+    
+    // Track if we're in settings flow
+    val isInSettingsFlow = currentRoute?.startsWith(Screen.Settings.route) ?: false
 
     ApelvoTheme {
         Scaffold(
@@ -36,27 +43,35 @@ fun App() {
             topBar = {
                 ApelvoTopBar(
                     onSettingsClick = {
-                        navController.navigate(Screen.Settings.route)
-                    }
+                        if (isInSettingsFlow) {
+                            // Just pop back to the previous screen instead of forcing Overview
+                            navController.popBackStack()
+                        } else {
+                            navController.navigate(Screen.Settings.route) {
+                                // Preserve the back stack when entering settings
+                                launchSingleTop = true
+                            }
+                        }
+                    },
+                    isInSettingsFlow = isInSettingsFlow
                 )
             },
             bottomBar = {
-                ApelvoBottomBar(
-                    currentRoute = currentRoute,
-                    onNavigate = { screen ->
-                        navController.navigate(screen.route) {
-                            // Pop up to the start destination of the graph to
-                            // avoid building up a large stack of destinations
-                            popUpTo(Screen.Overview.route) {
-                                saveState = true
+                // Hide bottom bar in settings flow
+                if (!isInSettingsFlow) {
+                    ApelvoBottomBar(
+                        currentRoute = currentRoute,
+                        onNavigate = { screen ->
+                            navController.navigate(screen.route) {
+                                popUpTo(Screen.Overview.route) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
                             }
-                            // Avoid multiple copies of the same destination
-                            launchSingleTop = true
-                            // Restore state when reselecting a previously selected item
-                            restoreState = true
                         }
-                    }
-                )
+                    )
+                }
             }
         ) { paddingValues ->
             Box(
@@ -93,10 +108,22 @@ fun App() {
                     }
                     composable(
                         route = Screen.Settings.route,
-                        enterTransition = { springInFromBottom() },
-                        exitTransition = { springOutToBottom() }
+                        enterTransition = {
+                            slideInHorizontally(
+                                initialOffsetX = { fullWidth -> fullWidth }
+                            ) + fadeIn()
+                        },
+                        exitTransition = {
+                            slideOutHorizontally(
+                                targetOffsetX = { fullWidth -> fullWidth }
+                            ) + fadeOut()
+                        }
                     ) {
-                        SettingsScreen()
+                        SettingsScreen(
+                            onNavigateToSubsetting = { subsettingRoute ->
+                                navController.navigate("settings/$subsettingRoute")
+                            }
+                        )
                     }
                     composable(
                         route = "game/{gameId}",
@@ -104,6 +131,24 @@ fun App() {
                     ) { backStackEntry ->
                         val gameId = backStackEntry.arguments?.getString("gameId") ?: return@composable
                         GamePlayerScreen(gameId = gameId)
+                    }
+                    // Example of nested settings route
+                    composable(
+                        route = "settings/{subsetting}",
+                        arguments = listOf(navArgument("subsetting") { type = NavType.StringType }),
+                        enterTransition = {
+                            slideInHorizontally(
+                                initialOffsetX = { fullWidth -> fullWidth }
+                            ) + fadeIn()
+                        },
+                        exitTransition = {
+                            slideOutHorizontally(
+                                targetOffsetX = { fullWidth -> fullWidth }
+                            ) + fadeOut()
+                        }
+                    ) { backStackEntry ->
+                        val subsetting = backStackEntry.arguments?.getString("subsetting")
+                        // Handle subsetting screens
                     }
                 }
             }

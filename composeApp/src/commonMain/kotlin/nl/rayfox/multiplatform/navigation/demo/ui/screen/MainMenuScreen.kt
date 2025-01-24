@@ -37,18 +37,9 @@ fun MainMenuScreen(
             Column(
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.SpaceEvenly // This distributes space evenly
+                verticalArrangement = Arrangement.SpaceEvenly
             ) {
-                // Logo Section (15% of height)
-                Image(
-                    painter = painterResource(Res.drawable.apelvo_logo),
-                    contentDescription = "Header Image",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height((screenHeight * 0.15f).coerceAtMost(120.dp))
-                )
-
-                // Stats Cards Section (20% of height)
+                // Stats Cards Section
                 Row(
                     modifier = Modifier
                         .fillMaxWidth(0.9f)
@@ -68,14 +59,14 @@ fun MainMenuScreen(
                     )
                 }
 
-                // Circular Progress Section (25% of height)
+                // Circular Progress Section
                 CircularProgressIndicator(
                     progress = viewModel.circularProgress / 100f,
                     displayedPercentage = viewModel.circularProgress,
                     size = (screenHeight * 0.25f).coerceAtMost(160.dp)
                 )
 
-                // Bar Chart Section (25% of height)
+                // Bar Chart Section
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.padding(vertical = 8.dp)
