@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nl.rayfox.multiplatform.navigation.demo.ui.components.ScreenLayout
+import androidx.compose.foundation.shape.RoundedCornerShape
 
 @Composable
 fun GameHubScreen(
@@ -33,9 +34,8 @@ fun GameHubScreen(
             items(games) { game ->
                 GameCard(
                     game = game,
-                    onClick = { onGameSelected(game.id) }
+                    onGameSelected = onGameSelected
                 )
-                Spacer(modifier = Modifier.height(8.dp))
             }
         }
     }
@@ -45,14 +45,15 @@ fun GameHubScreen(
 @Composable
 private fun GameCard(
     game: WebGLGameModel,
-    onClick: () -> Unit
+    onGameSelected: (String) -> Unit
 ) {
     Card(
-        onClick = onClick,
+        onClick = { onGameSelected(game.id) },
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        elevation = 4.dp
+            .padding(vertical = 8.dp),
+        elevation = 4.dp,
+        shape = RoundedCornerShape(8.dp)
     ) {
         Column(
             modifier = Modifier.padding(16.dp)

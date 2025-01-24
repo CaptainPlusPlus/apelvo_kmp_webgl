@@ -128,7 +128,7 @@ fun App() {
                         arguments = listOf(navArgument("gameId") { type = NavType.StringType })
                     ) { backStackEntry ->
                         val gameId = backStackEntry.arguments?.getString("gameId") ?: return@composable
-                        GamePlayerScreen(gameId = gameId)
+                        GameWebViewScreen(gameId = gameId)
                     }
                     // Example of nested settings route
                     composable(

@@ -1,19 +1,19 @@
 class GameWebViewRepository {
     private val availableGames = listOf(
         WebGLGameModel(
-            id = "game1",
-            name = "Sample Game",
-            description = "A WebGL sample game",
-            htmlPath = "games/sample-game/index.html",
+            id = "example",
+            name = "Example Website",
+            description = "Test website for WebView implementation",
+            htmlPath = "https://www.funkykarts.rocks/demo.html",
             thumbnailPath = "games/sample-game/thumbnail.png"
         )
     )
 
     fun getAvailableGames(): List<WebGLGameModel> = availableGames
 
-    fun getGameById(id: String): WebGLGameModel? = 
+    fun getGameById(id: String): WebGLGameModel? =
         availableGames.find { it.id == id }
-
+    
     suspend fun loadGameHtml(gameId: String): Result<String> {
         return try {
             // Load HTML content from resources
